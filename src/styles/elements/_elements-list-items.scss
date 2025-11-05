@@ -1,0 +1,17 @@
+@use 'app-variables.scss' as *;
+
+li {
+    list-style-type: disc;
+    list-style-position: inside;
+    margin-bottom: 5px;
+}
+
+li.special {
+    list-style-type: none;
+    display: flex;
+
+    &:before {
+        content: '\2714';
+        padding-right: 10px;
+    }
+}

@@ -1,0 +1,7 @@
+@use 'app-variables.scss' as *;
+
+::placeholder {
+    color: $text-color-pri !important;
+    padding-left: 5px !important;
+    text-align: start;
+}

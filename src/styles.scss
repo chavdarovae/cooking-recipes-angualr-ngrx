@@ -1,1 +1,38 @@
 /* You can add global styles to this file, and also import other style files */
+@use './styles/_app-variables.scss';
+
+@use './styles/settings/_settings-keyframes.scss';
+@use './styles/settings/_settings-breakpoints.scss';
+
+@use './styles/generic/_generic-normalize.scss';
+@use './styles/generic/_generic-fonts.scss';
+
+@use './styles/elements/_elements-body.scss';
+@use './styles/elements/_elements-paragraphs.scss';
+@use './styles/elements/_elements-headings.scss';
+@use './styles/elements/_elements-lists.scss';
+@use './styles/elements/_elements-list-items.scss';
+@use './styles/elements/_elements-images.scss';
+@use './styles/elements/_elements-buttons.scss';
+@use './styles/elements/_elements-links.scss';
+@use './styles/elements/_elements-placeholder.scss';
+@use './styles/elements/_elements-popover.scss';
+
+@use './styles/objects/_objects-containers.scss';
+@use './styles/objects/_objects-row.scss';
+@use './styles/objects/_objects-col.scss';
+@use './styles/objects/_objects-icons-custom.scss';
+
+@use './styles/components/_components-form.scss';
+@use './styles/components/components-loader';
+
+@use './styles/utilities/_utilities-bold.scss';
+@use './styles/utilities/_utilities-text-overflow.scss';
+@use './styles/utilities/_utilities-hidden.scss';
+@use './styles/utilities/_utilities-animations.scss';
+@use './styles/utilities/_utilities-margin-und-paddigns.scss';
+@use './styles/utilities/_utilities-mobile-only.scss';
+@use './styles/utilities/_utilities-tablet-only.scss';
+@use './styles/utilities/_utilities-misc.scss';
+@use './styles/utilities/_utilities-width.scss';
+@use './styles/utilities/_utilities-flex-gap.scss';

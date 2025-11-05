@@ -4,3 +4,5 @@
 .angular
 
 /.nx/workspace-data
+
+/src/main.ts

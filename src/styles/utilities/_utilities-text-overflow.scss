@@ -1,0 +1,20 @@
+@use 'app-variables.scss' as *;
+
+.text-overflow {
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap;
+    width: 100%;
+}
+
+.text-centered {
+    text-align: center !important;
+}
+
+.text-accent {
+    color: $app-accent;
+}
+
+.text-20 {
+    font-size: 20px;
+}

@@ -1,0 +1,10 @@
+@use 'app-variables' as *;
+
+a {
+    text-decoration: none;
+    color: $app-accent;
+}
+
+*:focus {
+    outline: none;
+}
