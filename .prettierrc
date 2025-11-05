@@ -1,11 +1,11 @@
 {
-    "printWidth": 300,
+    "printWidth": 80,
     "tabWidth": 4,
     "useTabs": false,
     "semi": true,
+    "bracketSameLine": false,
     "singleQuote": true,
     "singleAttributePerLine": true,
-    "bracketSameLine": true,
     "endOfLine": "lf",
     "arrowParens": "always",
     "quoteProps": "as-needed",
@@ -16,13 +16,14 @@
         {
             "files": ["*.json", "*.yml", "*.yaml"],
             "options": {
-                "printWidth": 300
+                "printWidth": 80
             }
         },
         {
             "files": ["*.html"],
             "options": {
-                "printWidth": 300
+                "printWidth": 160,
+                "bracketSameLine": true
             }
         }
     ]

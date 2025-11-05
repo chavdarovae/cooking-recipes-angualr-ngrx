@@ -24,12 +24,16 @@
                         "assets": [
                             {
                                 "glob": "**/*",
-                                "input": "public"
+                                "input": "public",
+                                "output": "/assets/"
                             }
                         ],
                         "styles": ["src/styles.scss"],
                         "stylePreprocessorOptions": {
-                            "includePaths": ["src/styles", "src/styles/settings"]
+                            "includePaths": [
+                                "src/styles",
+                                "src/styles/settings"
+                            ]
                         }
                     },
                     "configurations": {

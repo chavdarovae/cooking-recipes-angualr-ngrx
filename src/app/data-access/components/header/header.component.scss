@@ -1,0 +1,55 @@
+@use 'app-variables.scss' as *;
+@use 'settings-breakpoints' as *;
+
+.nav {
+    width: 100%;
+    height: $header-height;
+    display: flex;
+    flex-direction: row nowrap;
+    align-items: center;
+
+    * {
+        font-size: 18px;
+        color: $text-color-sec;
+        cursor: pointer;
+    }
+
+    &__logo {
+        height: 35px;
+        aspect-ratio: 1;
+
+        img {
+            height: 100%;
+            width: auto;
+            filter: invert(1);
+        }
+    }
+
+    &__item {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: $header-height;
+        padding: 0 2rem;
+
+        &:hover {
+            box-shadow: $shadow-hover;
+            transform: scaleY(1.05);
+        }
+    }
+
+    .popover {
+        width: 250px;
+
+        &__trigger {
+            width: 250px;
+        }
+
+        &__panel {
+            margin-top: 1px;
+            width: 250px;
+            border: none;
+            box-shadow: $shadow-pri;
+        }
+    }
+}

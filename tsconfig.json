@@ -4,6 +4,15 @@
     "compileOnSave": false,
     "compilerOptions": {
         "strict": true,
+        "baseUrl": "src",
+        "paths": {
+            "@app/*": ["app/*"],
+            "@env/*": ["environments/*"],
+            "@data-access/*": ["app/data-access/*"],
+            "@ui/*": ["app/ui/*"],
+            "@utils/*": ["app/utils/*"],
+            "@assets/*": ["public/*"]
+        },
         "noImplicitOverride": true,
         "noPropertyAccessFromIndexSignature": true,
         "noImplicitReturns": true,

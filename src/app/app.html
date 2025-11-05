@@ -1,2 +1,11 @@
-<h1>App is running</h1>
-<router-outlet />
+<div class="app">
+    <rcp-header class="app__header"></rcp-header>
+
+    <rcp-alert class="app__alert"></rcp-alert>
+
+    <div class="app__main">
+        <router-outlet></router-outlet>
+    </div>
+
+    <rcp-footer class="app__footer"></rcp-footer>
+</div>
