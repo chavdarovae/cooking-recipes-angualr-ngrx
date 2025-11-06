@@ -20,7 +20,6 @@ import { combineLatest } from 'rxjs';
     styleUrl: './register-component.scss',
 })
 export class RegisterComponent {
-    authService = inject(AuthService);
     private store = inject(Store);
 
     model = {
@@ -29,8 +28,6 @@ export class RegisterComponent {
         password: '',
         rePassword: '',
     };
-    submitted = false;
-    isSubmitting$ = this.store.select(selectIsSubmitting);
 
     data$ = combineLatest({
         isSubmitting: this.store.select(selectIsSubmitting),
@@ -38,7 +35,6 @@ export class RegisterComponent {
     });
 
     onSubmit() {
-        this.submitted = true;
         if (!this.model.email || !this.model.password || !this.model.username) {
             return;
         }
@@ -50,6 +46,5 @@ export class RegisterComponent {
         };
 
         this.store.dispatch(authActions.register({ request }));
-        this.authService.register(request).subscribe();
     }
 }

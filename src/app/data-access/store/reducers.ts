@@ -25,7 +25,7 @@ export const authFeature = createFeature({
         })),
         on(authActions.registerFailure, (state, action) => ({
             ...state,
-            isSubmitting: true,
+            isSubmitting: false,
             validatonErrors: action.errors,
         })),
     ),

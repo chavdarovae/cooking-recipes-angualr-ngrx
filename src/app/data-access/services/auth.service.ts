@@ -31,7 +31,7 @@ export class AuthService {
 
     // auxiliary varibles
     private accountApi = environment.backendUrl + '/api/users';
-    private currUserSotrageKey = 'currUser';
+    currUserSotrageKey = 'currUser';
 
     constructor() {
         const storedCurrUser = JSON.parse(
@@ -52,12 +52,10 @@ export class AuthService {
     }
 
     register(registerData: ICreateUser): Observable<IUser> {
-        return this.http
-            .post<IUser>(this.accountApi + '/register', registerData)
-            .pipe(
-                tap((user: IUser) => this.setCurrUser(user)),
-                first(),
-            );
+        return this.http.post<IUser>(
+            this.accountApi + '/register',
+            registerData,
+        );
     }
 
     login(loginData: IUser): Observable<IUser> {
@@ -68,7 +66,6 @@ export class AuthService {
                     this.setCurrUser(user);
                     this.router.navigateByUrl('/');
                 }),
-                first(),
             );
     }
 
@@ -78,7 +75,6 @@ export class AuthService {
                 this.setCurrUserAsGuest();
                 this.router.navigateByUrl('/');
             }),
-            first(),
         );
     }
 
@@ -111,7 +107,7 @@ export class AuthService {
         this.setCurrUser(null);
     }
 
-    private setCurrUser(user: IUser | null) {
+    setCurrUser(user: IUser | null) {
         this.currUser.set(user);
         localStorage.setItem(this.currUserSotrageKey, JSON.stringify(user));
     }
