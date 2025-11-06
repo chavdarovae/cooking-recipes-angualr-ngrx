@@ -13,6 +13,11 @@ export interface IUserWithPassword extends ICreateUser {
 
 export type IUser = Omit<IUserWithPassword, 'password'>;
 
+export interface ILoginUser {
+    email: string;
+    password: string;
+}
+
 export interface IUserQuery {
     search?: string;
     role?: UserRolesEnum;

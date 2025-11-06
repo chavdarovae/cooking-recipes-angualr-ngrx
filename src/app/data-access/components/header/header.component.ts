@@ -3,13 +3,18 @@ import { Component, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { IsAuthorisedDirective } from '../../directives/auth.directive';
 import { IAppMenuItem, ListFilterPipe, MENU_ITEMS } from '@app/utils';
-import { AuthService } from '@app/data-access/services/auth.service';
+import { combineLatest } from 'rxjs';
+import {
+    selectCurrentUser,
+    selectIsSubmitting,
+    selectValidatonErrors,
+} from '@app/data-access/store/reducers';
+import { Store } from '@ngrx/store';
 
 @Component({
     selector: 'rcp-header',
     templateUrl: './header.component.html',
     styleUrls: ['./header.component.scss'],
-    standalone: true,
     imports: [
         CommonModule,
         RouterModule,
@@ -19,11 +24,17 @@ import { AuthService } from '@app/data-access/services/auth.service';
     ],
 })
 export class HeaderComponent {
-    protected authService = inject(AuthService);
+    private store = inject(Store);
 
     menuItems: IAppMenuItem[] = Object.entries(MENU_ITEMS).map(
         ([key, value]) => ({ title: key, ...value }),
     );
+
+    data$ = combineLatest({
+        isSubmitting: this.store.select(selectIsSubmitting),
+        backendErrors: this.store.select(selectValidatonErrors),
+        currUser: this.store.select(selectCurrentUser).pipe(),
+    });
 
     filterMenuMainMenu(
         mainMenuName: string,

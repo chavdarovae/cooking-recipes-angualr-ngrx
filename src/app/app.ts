@@ -1,10 +1,12 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import {
     AlertComponent,
+    authActions,
     FooterComponent,
     HeaderComponent,
 } from './data-access';
+import { Store } from '@ngrx/store';
 
 @Component({
     selector: 'app-root',
@@ -13,9 +15,9 @@ import {
     styleUrl: './app.scss',
 })
 export class App implements OnInit {
-    protected readonly title = signal('cooking-recipes-angualr-ngrx');
+    private store = inject(Store);
 
     ngOnInit(): void {
-        console.log('app is there');
+        this.store.dispatch(authActions.getOwnAccount());
     }
 }

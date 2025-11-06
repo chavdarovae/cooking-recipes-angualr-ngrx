@@ -1,25 +1,15 @@
 import {
-    HttpEvent,
-    HttpHandler,
-    HttpInterceptor,
-    HttpRequest,
+    HttpInterceptorFn,
     HttpXsrfTokenExtractor,
 } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { inject } from '@angular/core';
 
-@Injectable()
-export class AuthInterceptor implements HttpInterceptor {
-    private tokenService = inject(HttpXsrfTokenExtractor);
-
-    intercept(
-        req: HttpRequest<unknown>,
-        next: HttpHandler,
-    ): Observable<HttpEvent<unknown>> {
-        const token = this.tokenService.getToken();
-        if (token !== null) {
-            req = req.clone({ withCredentials: true });
-        }
-        return next.handle(req);
+export const authInterceptor: HttpInterceptorFn = (request, next) => {
+    const tokenService = inject(HttpXsrfTokenExtractor);
+    const token = tokenService.getToken();
+    if (token !== null) {
+        request = request.clone({ withCredentials: true });
     }
-}
+
+    return next(request);
+};

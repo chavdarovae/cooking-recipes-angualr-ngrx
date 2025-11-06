@@ -43,7 +43,101 @@ export const registerEffect = createEffect(
     { functional: true },
 );
 
-export const redirectEffectAfterRegister = createEffect(
+export const redirectEffectAfterRegisterSuccess = createEffect(
+    (actions$ = inject(Actions), router = inject(Router)) => {
+        return actions$.pipe(
+            ofType(authActions.registerSuccess),
+            tap(() => {
+                router.navigateByUrl('/');
+            }),
+        );
+    },
+    { functional: true, dispatch: false },
+);
+
+export const loginEffect = createEffect(
+    (
+        actions$ = inject(Actions),
+        authService = inject(AuthService),
+        persistantService = inject(PersistantService),
+    ) => {
+        return actions$.pipe(
+            ofType(authActions.login),
+            switchMap(({ request }) => {
+                return authService.login(request).pipe(
+                    map((currUser: IUser) => {
+                        // side effects
+                        persistantService.setToLocalStorage(
+                            authService.currUserSotrageKey,
+                            currUser,
+                        );
+
+                        return authActions.loginSuccess({
+                            request: currUser,
+                        });
+                    }),
+                    catchError((err: HttpErrorResponse) => {
+                        return of(
+                            authActions.loginFailure({
+                                errors: err.error.errors,
+                            }),
+                        );
+                    }),
+                );
+            }),
+        );
+    },
+    { functional: true },
+);
+
+export const redirectEffectAfterLoginSuccess = createEffect(
+    (actions$ = inject(Actions), router = inject(Router)) => {
+        return actions$.pipe(
+            ofType(authActions.registerSuccess),
+            tap(() => {
+                router.navigateByUrl('/');
+            }),
+        );
+    },
+    { functional: true, dispatch: false },
+);
+
+export const getOwnAccountEffect = createEffect(
+    (
+        actions$ = inject(Actions),
+        authService = inject(AuthService),
+        persistantService = inject(PersistantService),
+    ) => {
+        return actions$.pipe(
+            ofType(authActions.getOwnAccount),
+            switchMap(() => {
+                return authService.getOwnAccount().pipe(
+                    map((currUser: IUser) => {
+                        // side effects
+                        persistantService.setToLocalStorage(
+                            authService.currUserSotrageKey,
+                            currUser,
+                        );
+
+                        return authActions.getOwnAccountSuccess({
+                            request: currUser,
+                        });
+                    }),
+                    catchError((err: HttpErrorResponse) => {
+                        return of(
+                            authActions.getOwnAccountFailure({
+                                errors: err.error.errors,
+                            }),
+                        );
+                    }),
+                );
+            }),
+        );
+    },
+    { functional: true },
+);
+
+export const redirectEffectAftergetOwnAccountSuccess = createEffect(
     (actions$ = inject(Actions), router = inject(Router)) => {
         return actions$.pipe(
             ofType(authActions.registerSuccess),

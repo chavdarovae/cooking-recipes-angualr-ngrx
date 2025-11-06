@@ -1,6 +1,7 @@
 import { createFeature, createReducer, on } from '@ngrx/store';
 import { IAuthStateInterface } from '../interfaces/auth-state-interface';
 import { authActions } from './actions';
+import { routerNavigationAction } from '@ngrx/router-store';
 
 const initalState: IAuthStateInterface = {
     isSubmitting: false,
@@ -27,6 +28,47 @@ export const authFeature = createFeature({
             ...state,
             isSubmitting: false,
             validatonErrors: action.errors,
+        })),
+
+        // login actions
+        on(authActions.login, (state) => ({
+            ...state,
+            isSubmitting: true,
+            validatonErrors: null,
+        })),
+        on(authActions.loginSuccess, (state, action) => ({
+            ...state,
+            isSubmitting: false,
+            currentUser: action.request,
+        })),
+        on(authActions.loginFailure, (state, action) => ({
+            ...state,
+            isSubmitting: false,
+            validatonErrors: action.errors,
+        })),
+
+        // getOwnAccount actions
+        on(authActions.getOwnAccount, (state) => ({
+            ...state,
+            isLoading: true,
+            validatonErrors: null,
+        })),
+        on(authActions.getOwnAccountSuccess, (state, action) => ({
+            ...state,
+            isLoading: false,
+            currentUser: action.request,
+        })),
+        on(authActions.getOwnAccountFailure, (state, action) => ({
+            ...state,
+            isLoading: false,
+            currentUser: null,
+            validatonErrors: action.errors,
+        })),
+
+        // router navigation
+        on(routerNavigationAction, (state) => ({
+            ...state,
+            validatonErrors: null,
         })),
     ),
 });

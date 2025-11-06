@@ -3,7 +3,13 @@ import { computed, inject, Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { first, Observable, shareReplay, Subject, switchMap, tap } from 'rxjs';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { ICreateUser, IUser, IUserQuery, UtilService } from '@app/utils';
+import {
+    ICreateUser,
+    ILoginUser,
+    IUser,
+    IUserQuery,
+    UtilService,
+} from '@app/utils';
 import { environment } from '@env/environment';
 
 @Injectable({
@@ -45,10 +51,7 @@ export class AuthService {
     }
 
     getOwnAccount(): Observable<IUser> {
-        return this.http.get<IUser>(this.accountApi + '/ownAccount').pipe(
-            tap((user: IUser) => this.setCurrUser(user)),
-            first(),
-        );
+        return this.http.get<IUser>(this.accountApi + '/ownAccount');
     }
 
     register(registerData: ICreateUser): Observable<IUser> {
@@ -58,15 +61,8 @@ export class AuthService {
         );
     }
 
-    login(loginData: IUser): Observable<IUser> {
-        return this.http
-            .post<IUser>(this.accountApi + '/login', loginData)
-            .pipe(
-                tap((user: IUser) => {
-                    this.setCurrUser(user);
-                    this.router.navigateByUrl('/');
-                }),
-            );
+    login(loginData: ILoginUser): Observable<IUser> {
+        return this.http.post<IUser>(this.accountApi + '/login', loginData);
     }
 
     logout(): Observable<any> {
