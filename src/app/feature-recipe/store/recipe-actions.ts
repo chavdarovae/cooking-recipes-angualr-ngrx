@@ -8,5 +8,9 @@ export const recipeActions = createActionGroup({
         getAllRecipes: props<{ query: IRecipeQuery }>(),
         getAllRecipesSuccess: props<{ recipeList: IRecipe[] }>(),
         getAllRecipesFailure: props<{ errors: IBackendErrors }>(),
+
+        getRecipeById: props<{ recipeId: string }>(),
+        getRecipeByIdSuccess: props<{ recipe: IRecipe }>(),
+        getRecipeByIdFailure: props<{ errors: IBackendErrors }>(),
     },
 });

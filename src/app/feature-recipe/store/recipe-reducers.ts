@@ -7,6 +7,7 @@ const initalState: IRecipeState = {
     isLoading: false,
     validatonErrors: null,
     recipeList: null,
+    recipe: null,
 };
 
 const recipeFeature = createFeature({
@@ -27,6 +28,21 @@ const recipeFeature = createFeature({
             isLoading: false,
             validatonErrors: action.errors,
         })),
+        // recipe by id
+        on(recipeActions.getRecipeById, (state) => ({
+            ...state,
+            isLoading: true,
+        })),
+        on(recipeActions.getRecipeByIdSuccess, (state, action) => ({
+            ...state,
+            isLoading: false,
+            recipe: action.recipe,
+        })),
+        on(recipeActions.getRecipeByIdFailure, (state, action) => ({
+            ...state,
+            isLoading: false,
+            validatonErrors: action.errors,
+        })),
         // restores the state back to minimal information in memory
         on(routerNavigatedAction, () => initalState),
     ),
@@ -37,5 +53,6 @@ export const {
     reducer: recipeReducer,
     selectIsLoading,
     selectRecipeList,
+    selectRecipe,
     selectValidatonErrors,
 } = recipeFeature;

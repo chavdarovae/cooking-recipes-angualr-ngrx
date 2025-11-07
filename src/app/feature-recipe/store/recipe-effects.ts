@@ -6,7 +6,7 @@ import { catchError, map, of, switchMap } from 'rxjs';
 import { IRecipe } from '../utils/recipe.interface';
 import { HttpErrorResponse } from '@angular/common/http';
 
-export const recipeEffect = createEffect(
+export const getAllRecipesEffect = createEffect(
     (actions$ = inject(Actions), recipeService = inject(RecipeService)) => {
         return actions$.pipe(
             ofType(recipeActions.getAllRecipes),
@@ -29,4 +29,29 @@ export const recipeEffect = createEffect(
         );
     },
     { functional: true },
+);
+
+export const getReicpeByIdEffect = createEffect(
+    (actions$ = inject(Actions), recipeService = inject(RecipeService)) => {
+        return actions$.pipe(
+            ofType(recipeActions.getRecipeById),
+            switchMap(({ recipeId }) => {
+                return recipeService.getRecipeById(recipeId).pipe(
+                    map((recipe: IRecipe) => {
+                        return recipeActions.getRecipeByIdSuccess({ recipe });
+                    }),
+                    catchError((err: HttpErrorResponse) => {
+                        return of(
+                            recipeActions.getRecipeByIdFailure({
+                                errors: err?.error?.error,
+                            }),
+                        );
+                    }),
+                );
+            }),
+        );
+    },
+    {
+        functional: true,
+    },
 );

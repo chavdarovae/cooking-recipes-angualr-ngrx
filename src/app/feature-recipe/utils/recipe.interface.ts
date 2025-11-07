@@ -4,6 +4,7 @@ export interface IRecipeState {
     isLoading: boolean;
     validatonErrors: IBackendErrors | null;
     recipeList: IRecipe[] | null;
+    recipe: IRecipe | null;
 }
 
 export interface ICreateRecipe {

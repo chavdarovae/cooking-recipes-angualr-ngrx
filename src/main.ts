@@ -1,7 +1,7 @@
 import { bootstrapApplication, BrowserModule } from '@angular/platform-browser';
 import { App } from './app/app';
 import { importProvidersFrom, provideBrowserGlobalErrorListeners, provideZoneChangeDetection, isDevMode } from '@angular/core'
-import { RouterModule } from '@angular/router'
+import { provideRouter, RouterModule, withComponentInputBinding, withRouterConfig } from '@angular/router'
 import { APP_ROUTES } from '@app/app.routes';
 import { provideState, provideStore } from '@ngrx/store';
 import { provideHttpClient, withInterceptors, withInterceptorsFromDi } from '@angular/common/http';
@@ -23,12 +23,16 @@ bootstrapApplication(App, {
             loaderInterceptor
         ])),
         provideHttpClient(withInterceptorsFromDi()),
-        importProvidersFrom(BrowserModule, RouterModule.forRoot(APP_ROUTES, {
-            anchorScrolling: 'enabled',
-            scrollPositionRestoration: 'enabled',
-            onSameUrlNavigation: 'reload',
-            useHash: true,
-        })),
+        provideRouter(
+			APP_ROUTES,
+			withComponentInputBinding(),
+            withRouterConfig({
+                anchorScrolling: 'enabled',
+                scrollPositionRestoration: 'enabled',
+                onSameUrlNavigation: 'reload',
+                useHash: true,
+            } as any)
+		),
         provideStore({
             router: routerReducer
         }),

@@ -53,10 +53,14 @@ export class RecipeService {
         this.selectedRecipeSubj.next(id);
     }
 
-    getAllRecipes(query: IRecipeQuery) {
+    getAllRecipes(query: IRecipeQuery): Observable<IRecipe[]> {
         return this.http.get<IRecipe[]>(
             this.accountApi + this.utilService.transformQueryIntoString(query),
         );
+    }
+
+    getRecipeById(recipeId: string): Observable<IRecipe> {
+        return this.http.get<IRecipe>(`${this.accountApi}/${recipeId}`);
     }
 
     create(newRecipe: IRecipe): Observable<IRecipe> {

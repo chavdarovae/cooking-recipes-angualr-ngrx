@@ -1,0 +1,67 @@
+@if ({ ui: userIteraction$ | async, data: data$ | async }; as subs) {
+    <div class="container">
+        @if (subs.data?.recipe; as selectedRecipe) {
+            <article class="recipe">
+                <h2>{{ selectedRecipe?.title }}</h2>
+
+                <div class="recipe__block">
+                    <div class="likes">
+                        <span>{{ selectedRecipe?.recommendList?.length }}</span>
+                        <i class="fa-solid fa-heart"></i>
+                    </div>
+                    <img
+                        src="{{ selectedRecipe?.image }}"
+                        alt="{{ selectedRecipe?.title }}" />
+                </div>
+
+                <div class="recipe__block col col--space-btw">
+                    <p>{{ selectedRecipe?.description }}</p>
+
+                    <hr />
+
+                    <h3>Ingredients:</h3>
+                    <p>{{ selectedRecipe?.ingredients }}</p>
+
+                    <hr />
+
+                    <h3>Instructions:</h3>
+                    <p>{{ selectedRecipe?.instructions }}</p>
+
+                    <hr />
+
+                    <div class="row row--no-wrap row--space-btw w100 mt-20">
+                        @if (subs.data?.currUser?._id === selectedRecipe?.owner) {
+                            <button
+                                class="danger"
+                                (click)="userIteractionSubj.next('deleteDialog')">
+                                Delete
+                            </button>
+                            <button
+                                [routerLink]="['/recipes/' + selectedRecipe?._id + '/edit']"
+                                [state]="{ recipe: selectedRecipe }">
+                                Edit
+                            </button>
+                        } @else {
+                            <button [routerLink]="['/recipes/']">Back to Recipes</button>
+                            <button
+                                class="accent"
+                                (click)="userIteractionSubj.next('recommend')"
+                                [disabled]="isAlreadyRecommendedByCurrUser()">
+                                Recommend
+                            </button>
+                        }
+                    </div>
+                </div>
+            </article>
+
+            @if (false) {
+                <div>You've already recommended this recipe!</div>
+            }
+
+            <app-modal
+                [show]="showModal"
+                entity="recipe"
+                (close)="onModalClosed($event)"></app-modal>
+        }
+    </div>
+}
