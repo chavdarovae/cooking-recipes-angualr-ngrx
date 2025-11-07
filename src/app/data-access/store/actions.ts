@@ -15,5 +15,9 @@ export const authActions = createActionGroup({
         getOwnAccount: emptyProps(),
         getOwnAccountSuccess: props<{ request: IUser }>(),
         getOwnAccountFailure: props<{ errors: IBackendErrors }>(),
+
+        logout: emptyProps(),
+        logoutSuccess: emptyProps(),
+        logoutFailure: props<{ errors: IBackendErrors }>(),
     },
 });

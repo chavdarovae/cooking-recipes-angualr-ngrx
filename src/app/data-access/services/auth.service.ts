@@ -65,13 +65,8 @@ export class AuthService {
         return this.http.post<IUser>(this.accountApi + '/login', loginData);
     }
 
-    logout(): Observable<any> {
-        return this.http.get<IUser>(this.accountApi + '/logout').pipe(
-            tap(() => {
-                this.setCurrUserAsGuest();
-                this.router.navigateByUrl('/');
-            }),
-        );
+    logout(): Observable<null> {
+        return this.http.get<null>(this.accountApi + '/logout');
     }
 
     getAllAccounts(query: IUserQuery): Observable<IUser[]> {

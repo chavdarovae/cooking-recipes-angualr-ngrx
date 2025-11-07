@@ -93,7 +93,7 @@ export const loginEffect = createEffect(
 export const redirectEffectAfterLoginSuccess = createEffect(
     (actions$ = inject(Actions), router = inject(Router)) => {
         return actions$.pipe(
-            ofType(authActions.registerSuccess),
+            ofType(authActions.loginSuccess),
             tap(() => {
                 router.navigateByUrl('/');
             }),
@@ -140,9 +140,54 @@ export const getOwnAccountEffect = createEffect(
 export const redirectEffectAftergetOwnAccountSuccess = createEffect(
     (actions$ = inject(Actions), router = inject(Router)) => {
         return actions$.pipe(
-            ofType(authActions.registerSuccess),
+            ofType(authActions.getOwnAccountSuccess),
             tap(() => {
                 router.navigateByUrl('/');
+            }),
+        );
+    },
+    { functional: true, dispatch: false },
+);
+
+export const logoutEffect = createEffect(
+    (
+        actions$ = inject(Actions),
+        authService = inject(AuthService),
+        persistantService = inject(PersistantService),
+    ) => {
+        return actions$.pipe(
+            ofType(authActions.logout),
+            switchMap(() => {
+                return authService.logout().pipe(
+                    map(() => {
+                        // side effects
+                        persistantService.setToLocalStorage(
+                            authService.currUserSotrageKey,
+                            null,
+                        );
+
+                        return authActions.logoutSuccess();
+                    }),
+                    catchError((err: HttpErrorResponse) => {
+                        return of(
+                            authActions.logoutFailure({
+                                errors: err.error.errors,
+                            }),
+                        );
+                    }),
+                );
+            }),
+        );
+    },
+    { functional: true },
+);
+
+export const redirectEffectAftergetLogoutSuccess = createEffect(
+    (actions$ = inject(Actions), router = inject(Router)) => {
+        return actions$.pipe(
+            ofType(authActions.logoutSuccess),
+            tap(() => {
+                router.navigateByUrl('/users/login');
             }),
         );
     },

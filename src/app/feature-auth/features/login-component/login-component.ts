@@ -1,4 +1,4 @@
-import { AuthService } from './../../../../data-access/services/auth.service';
+import { AuthService } from '../../../data-access/services/auth.service';
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';

@@ -9,6 +9,16 @@ export const APP_ROUTES: Routes = [
     {
         path: 'users',
         loadChildren: () =>
-            import('./features/auth/index').then((m) => m.AUTH_ROUTS),
+            import('@app/feature-auth').then((m) => m.AUTH_ROUTS),
+    },
+    {
+        path: '404',
+        loadComponent: () =>
+            import('@app/data-access').then((c) => c.PageNotFoundComponent),
+    },
+    {
+        path: '**',
+        redirectTo: '/404',
+        pathMatch: 'full',
     },
 ];
