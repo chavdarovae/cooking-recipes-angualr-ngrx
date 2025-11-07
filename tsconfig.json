@@ -12,20 +12,26 @@
             "@env/*": [
                 "environments/*"
             ],
-            "@data-access/*": [
-                "app/data-access/*"
+            "@data-access": [
+                "app/data-access/index"
             ],
-            "@ui/*": [
-                "app/ui/*"
+            "@ui": [
+                "app/ui/index"
             ],
-            "@utils/*": [
-                "app/utils/*"
+            "@utils": [
+                "app/utilsh/index"
             ],
-            "@assets/*": [
-                "public/*"
+            "@assets": [
+                "publich/index"
             ],
-            "@feature-auth/*": [
-                "app/feature-auth/*"
+            "@feature-auth": [
+                "app/feature-auth/index"
+            ],
+            "@feature-recipe": [
+                "app/feature-recipe/index"
+            ],
+            "@feature-user": [
+                "app/feature-user/index"
             ],
         },
         "noImplicitOverride": true,

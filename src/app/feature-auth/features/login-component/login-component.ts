@@ -34,7 +34,9 @@ export class LoginComponent {
         currUser: this.store.select(selectCurrentUser).pipe(),
     }).pipe(
         tap((data) => {
-            console.log(data.currUser);
+            if (data.currUser) {
+                console.log(data.currUser);
+            }
         }),
     );
 

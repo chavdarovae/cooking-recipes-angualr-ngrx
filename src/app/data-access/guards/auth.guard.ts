@@ -15,7 +15,7 @@ export class AuthGuard implements CanActivate {
         if (this.authService.currUserSig()) {
             return true;
         } else {
-            this.router.navigateByUrl('/users/login');
+            this.router.navigateByUrl('login');
             this.alertSrevice.showAlert({
                 alert: 'You are not authorised for this section. Please login!',
                 type: 'warning',

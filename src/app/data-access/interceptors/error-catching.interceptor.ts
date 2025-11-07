@@ -30,7 +30,7 @@ export const errorCatchingInterceptor: HttpInterceptorFn = (
                     break;
                 case 401:
                     authService.setCurrUserAsGuest();
-                    router.navigateByUrl('/users/login');
+                    router.navigateByUrl('login');
                     break;
                 case 403:
                     alertService.showAlert({

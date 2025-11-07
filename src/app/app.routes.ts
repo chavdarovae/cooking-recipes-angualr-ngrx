@@ -1,20 +1,29 @@
+import { USER_ROUTES } from './feature-user/utils/users.routes';
 import { Routes } from '@angular/router';
 
 export const APP_ROUTES: Routes = [
-    // {
-    //     path: '',
-    //     redirectTo: '/',
-    //     pathMatch: 'full',
-    // },
+    {
+        path: '',
+        redirectTo: '/recipes',
+        pathMatch: 'full',
+    },
+    {
+        path: '',
+        loadChildren: () => import('@feature-auth').then((m) => m.AUTH_ROUTES),
+    },
     {
         path: 'users',
+        loadChildren: () => import('@feature-user').then((m) => m.USER_ROUTES),
+    },
+    {
+        path: 'recipes',
         loadChildren: () =>
-            import('@app/feature-auth').then((m) => m.AUTH_ROUTS),
+            import('@feature-recipe').then((m) => m.RECIPE_ROUTES),
     },
     {
         path: '404',
         loadComponent: () =>
-            import('@app/data-access').then((c) => c.PageNotFoundComponent),
+            import('@data-access').then((c) => c.PageNotFoundComponent),
     },
     {
         path: '**',

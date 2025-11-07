@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { computed, inject, Injectable, signal } from '@angular/core';
-import { Router } from '@angular/router';
-import { first, Observable, shareReplay, Subject, switchMap, tap } from 'rxjs';
+import { first, Observable, shareReplay, Subject, switchMap } from 'rxjs';
 import { toSignal } from '@angular/core/rxjs-interop';
 import {
     ICreateUser,
@@ -18,7 +17,6 @@ import { environment } from '@env/environment';
 export class AuthService {
     // services
     private http = inject(HttpClient);
-    private router = inject(Router);
     private utilService = inject(UtilService);
 
     // main entity

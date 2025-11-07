@@ -3,7 +3,7 @@ import { RegisterComponent } from './features/register-component/register-compon
 import { LoginComponent } from './features/login-component/login-component';
 import { LogoutComponent } from './features/logout-component/login-component';
 
-export const AUTH_ROUTS: Routes = [
+export const AUTH_ROUTES: Routes = [
     {
         path: 'register',
         component: RegisterComponent,

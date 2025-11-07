@@ -1,6 +1,6 @@
 import { createFeature, createReducer, on } from '@ngrx/store';
 import { IAuthStateInterface } from '../interfaces/auth-state-interface';
-import { authActions } from './actions';
+import { authActions } from './auth-actions';
 import { routerNavigationAction } from '@ngrx/router-store';
 
 const initalState: IAuthStateInterface = {

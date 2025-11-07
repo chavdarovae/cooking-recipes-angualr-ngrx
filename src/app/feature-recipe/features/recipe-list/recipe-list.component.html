@@ -1,0 +1,21 @@
+@if (data$ | async; as data) {
+    <div class="container">
+        <form class="form form--filter">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <clt-input-field
+                modelName="searchString"
+                inpType="text"
+                placeholder="Recipe title"
+                [isTypeAhead]="true"
+                [inpValue]="query.search ?? ''"
+                (onInpChanged)="onSearchStringChange($event)">
+            </clt-input-field>
+        </form>
+
+        <div class="card-container">
+            @for (recipe of data.recipeList; track recipe._id) {
+                <rcp-card [recipe]="recipe"></rcp-card>
+            }
+        </div>
+    </div>
+}

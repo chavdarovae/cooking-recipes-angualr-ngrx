@@ -1,9 +1,9 @@
 import { AuthService } from '@app/data-access/services/auth.service';
-import { PersistantService } from './../../utils/services/persistant.service';
+import { PersistantService } from '../../utils/services/persistant.service';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { inject } from '@angular/core';
 import { IUser } from '@app/utils';
-import { authActions } from './actions';
+import { authActions } from './auth-actions';
 import { catchError, map, of, switchMap, tap } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
@@ -32,7 +32,7 @@ export const registerEffect = createEffect(
                     catchError((err: HttpErrorResponse) => {
                         return of(
                             authActions.registerFailure({
-                                errors: err.error.errors,
+                                errors: err?.error?.errors,
                             }),
                         );
                     }),
@@ -79,7 +79,7 @@ export const loginEffect = createEffect(
                     catchError((err: HttpErrorResponse) => {
                         return of(
                             authActions.loginFailure({
-                                errors: err.error.errors,
+                                errors: err?.error?.errors,
                             }),
                         );
                     }),
@@ -126,7 +126,7 @@ export const getOwnAccountEffect = createEffect(
                     catchError((err: HttpErrorResponse) => {
                         return of(
                             authActions.getOwnAccountFailure({
-                                errors: err.error.errors,
+                                errors: err?.error?.errors,
                             }),
                         );
                     }),
@@ -171,7 +171,7 @@ export const logoutEffect = createEffect(
                     catchError((err: HttpErrorResponse) => {
                         return of(
                             authActions.logoutFailure({
-                                errors: err.error.errors,
+                                errors: err?.error?.errors,
                             }),
                         );
                     }),
@@ -187,7 +187,7 @@ export const redirectEffectAftergetLogoutSuccess = createEffect(
         return actions$.pipe(
             ofType(authActions.logoutSuccess),
             tap(() => {
-                router.navigateByUrl('/users/login');
+                router.navigateByUrl('login');
             }),
         );
     },

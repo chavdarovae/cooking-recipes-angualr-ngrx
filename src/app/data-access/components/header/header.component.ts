@@ -8,7 +8,7 @@ import {
     selectCurrentUser,
     selectIsSubmitting,
     selectValidatonErrors,
-} from '@app/data-access/store/reducers';
+} from '@app/data-access/store/auth-reducers';
 import { Store } from '@ngrx/store';
 
 @Component({

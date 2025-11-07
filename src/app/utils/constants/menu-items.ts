@@ -20,12 +20,12 @@ export const MENU_ITEMS: Record<string, IAppMenuItem> = {
         underMainMenu: 'account',
     },
     login: {
-        path: 'users/login',
+        path: 'login',
         roles: [UserRolesEnum.GUEST],
         underMainMenu: 'account',
     },
     logout: {
-        path: 'users/logout',
+        path: 'logout',
         roles: [UserRolesEnum.ADMIN, UserRolesEnum.USER],
         underMainMenu: 'account',
     },

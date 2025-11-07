@@ -4,12 +4,13 @@ import { Injectable } from '@angular/core';
     providedIn: 'root',
 })
 export class UtilService {
-    transformQueryIntoString(query: Record<string, string>) {
+    transformQueryIntoString(query: unknown) {
+        const currQuery = query as Record<string, string>;
         let strToReturn = '?';
 
-        for (const key in query) {
-            if (query.hasOwnProperty(key) && !!query[key]) {
-                strToReturn += `${key}=${query[key]}&`;
+        for (const key in currQuery) {
+            if (currQuery.hasOwnProperty(key) && !!currQuery[key]) {
+                strToReturn += `${key}=${currQuery[key]}&`;
             }
         }
         return strToReturn;

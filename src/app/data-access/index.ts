@@ -15,5 +15,5 @@ export * from './services/alert.service';
 export * from './services/auth.service';
 export * from './services/loader-service';
 
-export * from './store/actions';
-export * from './store/reducers';
+export * from './store/auth-actions';
+export * from './store/auth-reducers';
