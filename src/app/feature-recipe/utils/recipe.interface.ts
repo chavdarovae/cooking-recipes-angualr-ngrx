@@ -1,5 +1,11 @@
 import { IBackendErrors } from '@app/utils';
 
+export interface IRecipeState {
+    isLoading: boolean;
+    validatonErrors: IBackendErrors | null;
+    recipeList: IRecipe[] | null;
+}
+
 export interface ICreateRecipe {
     title: string;
     ingredients: string;
@@ -17,10 +23,4 @@ export interface IRecipe extends ICreateRecipe {
 export interface IRecipeQuery {
     search?: string;
     owner?: string;
-}
-
-export interface IRecipeState {
-    isLoading: boolean;
-    validatonErrors: IBackendErrors | null;
-    recipeList: IRecipe[] | null;
 }

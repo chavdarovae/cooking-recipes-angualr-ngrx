@@ -1,13 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { computed, inject, Injectable, signal } from '@angular/core';
-import { first, Observable, shareReplay, Subject, switchMap } from 'rxjs';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { Observable } from 'rxjs';
 import {
+    CURR_USER_STPRAGE_KEY,
     ICreateUser,
     ILoginUser,
     IUser,
-    IUserQuery,
-    UtilService,
 } from '@app/utils';
 import { environment } from '@env/environment';
 
@@ -17,25 +15,14 @@ import { environment } from '@env/environment';
 export class AuthService {
     // services
     private http = inject(HttpClient);
-    private utilService = inject(UtilService);
 
     // main entity
     private currUser = signal<IUser | null | undefined>(undefined);
     currUserSig = computed(() => this.currUser());
-
-    // service state account list
-    private relaodAccountsSubj: Subject<IUserQuery> = new Subject();
-    private accounts$: Observable<IUser[]> = this.relaodAccountsSubj
-        .asObservable()
-        .pipe(
-            switchMap((query: IUserQuery) => this.getAllAccounts(query)),
-            shareReplay(),
-        );
-    accountsSig = toSignal(this.accounts$, { initialValue: [] as IUser[] });
+    currUserSotrageKey = CURR_USER_STPRAGE_KEY;
 
     // auxiliary varibles
-    private accountApi = environment.backendUrl + '/api/users';
-    currUserSotrageKey = 'currUser';
+    private authApiUrl = environment.backendUrl + '/api/users';
 
     constructor() {
         const storedCurrUser = JSON.parse(
@@ -44,52 +31,23 @@ export class AuthService {
         this.setCurrUser(storedCurrUser);
     }
 
-    relaodAccountList(query: IUserQuery) {
-        this.relaodAccountsSubj.next(query);
-    }
-
     getOwnAccount(): Observable<IUser> {
-        return this.http.get<IUser>(this.accountApi + '/ownAccount');
+        return this.http.get<IUser>(this.authApiUrl + '/ownAccount');
     }
 
     register(registerData: ICreateUser): Observable<IUser> {
         return this.http.post<IUser>(
-            this.accountApi + '/register',
+            this.authApiUrl + '/register',
             registerData,
         );
     }
 
     login(loginData: ILoginUser): Observable<IUser> {
-        return this.http.post<IUser>(this.accountApi + '/login', loginData);
+        return this.http.post<IUser>(this.authApiUrl + '/login', loginData);
     }
 
     logout(): Observable<null> {
-        return this.http.get<null>(this.accountApi + '/logout');
-    }
-
-    getAllAccounts(query: IUserQuery): Observable<IUser[]> {
-        return this.http.get<IUser[]>(
-            this.accountApi +
-                '/accounts' +
-                this.utilService.transformQueryIntoString(
-                    query as unknown as Record<string, string>,
-                ),
-        );
-    }
-
-    getAccount(userId: string): Observable<IUser> {
-        return this.http
-            .get<IUser>(this.accountApi + '/accounts/' + userId)
-            .pipe(first());
-    }
-
-    updateAccount(modifiedUser: IUser): Observable<IUser> {
-        return this.http
-            .put<IUser>(
-                this.accountApi + '/accounts/' + modifiedUser._id,
-                modifiedUser,
-            )
-            .pipe(first());
+        return this.http.get<null>(this.authApiUrl + '/logout');
     }
 
     setCurrUserAsGuest() {

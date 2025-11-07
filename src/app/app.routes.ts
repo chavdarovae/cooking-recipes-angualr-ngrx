@@ -1,5 +1,11 @@
-import { USER_ROUTES } from './feature-user/utils/users.routes';
 import { Routes } from '@angular/router';
+import {
+    userFeatureKey,
+    userReducer,
+} from './feature-user/store/user-reducers';
+import { provideState } from '@ngrx/store';
+import { provideEffects } from '@ngrx/effects';
+import * as userEffects from './feature-user/store/user-effects';
 
 export const APP_ROUTES: Routes = [
     {
@@ -14,6 +20,10 @@ export const APP_ROUTES: Routes = [
     {
         path: 'users',
         loadChildren: () => import('@feature-user').then((m) => m.USER_ROUTES),
+        providers: [
+            provideState(userFeatureKey, userReducer),
+            provideEffects(userEffects),
+        ],
     },
     {
         path: 'recipes',

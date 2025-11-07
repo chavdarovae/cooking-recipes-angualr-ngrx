@@ -1,8 +1,7 @@
 import { AuthService } from '@app/data-access/services/auth.service';
-import { PersistantService } from '../../utils/services/persistant.service';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { inject } from '@angular/core';
-import { IUser } from '@app/utils';
+import { IUser, PersistantService } from '@app/utils';
 import { authActions } from './auth-actions';
 import { catchError, map, of, switchMap, tap } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';

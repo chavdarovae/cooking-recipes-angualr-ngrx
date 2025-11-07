@@ -17,3 +17,4 @@ export * from './services/loader-service';
 
 export * from './store/auth-actions';
 export * from './store/auth-reducers';
+export * from './store/auth-effects';

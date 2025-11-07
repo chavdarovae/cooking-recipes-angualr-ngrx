@@ -17,8 +17,3 @@ export interface ILoginUser {
     email: string;
     password: string;
 }
-
-export interface IUserQuery {
-    search?: string;
-    role?: UserRolesEnum;
-}

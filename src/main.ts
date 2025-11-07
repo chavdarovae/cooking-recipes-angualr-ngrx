@@ -8,10 +8,10 @@ import { provideHttpClient, withInterceptors, withInterceptorsFromDi } from '@an
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { authFeatureKey, authInterceptor, authReducer, errorCatchingInterceptor, loaderInterceptor } from '@app/data-access';
 import { provideEffects } from '@ngrx/effects';
-import * as authEffects from '@data-access';
-import * as recipeEffects from '@feature-recipe';
+import * as authEffects from './app/data-access/store/auth-effects';
+import * as recipeEffects from './app/feature-recipe/store/recipe-effects';
 import { provideRouterStore, routerReducer } from '@ngrx/router-store';
-import { recipeFeatureKey, recipeReducer } from '@app/feature-recipe';
+import { recipeFeatureKey, recipeReducer } from '@feature-recipe';
 
 bootstrapApplication(App, {
     providers: [

@@ -1,36 +1,48 @@
-import { Component, inject, OnInit, Signal } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { InputFieldComponent, InputSelectComponent } from '@app/ui';
-import { AuthService } from '@app/data-access';
+import { UserRolesEnum } from '@app/utils';
+import { combineLatest, of } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { AsyncPipe } from '@angular/common';
 import { UserQuery } from '@app/feature-user/utils/user.models';
-import { IUser, UserRolesEnum } from '@app/utils';
+import {
+    selectIsLoading,
+    selectUserList,
+    selectValidatonErrors,
+} from '../../store/user-reducers';
+import { userActions } from '@app/feature-user/store/user-actions';
 
 @Component({
     selector: 'app-user-list',
     standalone: true,
     templateUrl: './user-list.component.html',
     styleUrl: './user-list.component.scss',
-    imports: [RouterLink, InputFieldComponent, InputSelectComponent],
+    imports: [RouterLink, InputFieldComponent, InputSelectComponent, AsyncPipe],
     providers: [NgForm],
 })
 export class UserListComponent implements OnInit {
-    // services
-    private authService = inject(AuthService);
-
-    // main entity
-    accountsSig: Signal<IUser[]> = this.authService.accountsSig;
+    private store = inject(Store);
 
     // auxiliary variables
     query!: UserQuery;
     userRolesEnum = UserRolesEnum;
 
+    data$ = combineLatest({
+        userList: this.store.select(selectUserList),
+        isLoading: this.store.select(selectIsLoading),
+        backendErrors: this.store.select(selectValidatonErrors),
+    });
+
     ngOnInit(): void {
         this.query = new UserQuery('');
-        this.authService.relaodAccountList(this.query);
+        const query = { ...this.query };
+        this.store.dispatch(userActions.getAllUsers({ query }));
     }
 
     onSearchQueryChange() {
-        this.authService.relaodAccountList(this.query);
+        const query = { ...this.query };
+        this.store.dispatch(userActions.getAllUsers({ query }));
     }
 }

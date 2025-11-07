@@ -1,4 +1,5 @@
-import { IUser, IUserQuery, UserRolesEnum } from '@app/utils';
+import { IUser, UserRolesEnum } from '@app/utils';
+import { IUserQuery } from './user.interfaces';
 
 export class UserEditItem implements IUser {
     _id: string = '';
