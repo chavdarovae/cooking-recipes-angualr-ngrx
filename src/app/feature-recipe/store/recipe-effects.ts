@@ -1,12 +1,12 @@
-import { AlertService } from './../../data-access/services/alert.service';
+import { IRecipe } from '@app/feature-recipe/utils/recipe.interface';
 import { RecipeService } from './../data-access/recipe.service';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { recipeActions } from './recipe-actions';
 import { inject } from '@angular/core';
 import { catchError, map, of, switchMap, tap } from 'rxjs';
-import { IRecipe } from '../utils/recipe.interface';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { AlertService } from '@app/data-access';
 
 export const getAllRecipesEffect = createEffect(
     (actions$ = inject(Actions), recipeService = inject(RecipeService)) => {
@@ -83,6 +83,67 @@ export const deleteRecipeByIdEffect = createEffect(
     },
 );
 
+export const redirectAndAlertEffectAfterDeleteRecipeByIdSuccess = createEffect(
+    (
+        actions$ = inject(Actions),
+        router = inject(Router),
+        alertService = inject(AlertService),
+    ) => {
+        return actions$.pipe(
+            ofType(recipeActions.deleteRecipeByIdSuccess),
+            tap(() => {
+                alertService.showSuccessAlert('recipe', 'recommended');
+                router.navigateByUrl('/recipes');
+            }),
+        );
+    },
+    { functional: true, dispatch: false },
+);
+
+export const createRecipeEffect = createEffect(
+    (actions$ = inject(Actions), recipeService = inject(RecipeService)) => {
+        return actions$.pipe(
+            ofType(recipeActions.createRecipe),
+            switchMap(({ recipe }) => {
+                return recipeService.create(recipe).pipe(
+                    map((recipe: IRecipe) => {
+                        return recipeActions.createRecipeSuccess({
+                            recipe,
+                        });
+                    }),
+                    catchError((err: HttpErrorResponse) => {
+                        return of(
+                            recipeActions.createRecipeFailure({
+                                errors: err?.error?.error,
+                            }),
+                        );
+                    }),
+                );
+            }),
+        );
+    },
+    {
+        functional: true,
+    },
+);
+
+export const redirectAndAlertEffectAfterCreatedRecipeSuccess = createEffect(
+    (
+        actions$ = inject(Actions),
+        router = inject(Router),
+        alertService = inject(AlertService),
+    ) => {
+        return actions$.pipe(
+            ofType(recipeActions.createRecipeSuccess),
+            tap(() => {
+                alertService.showSuccessAlert('recipe', 'created');
+                router.navigateByUrl('/recipes');
+            }),
+        );
+    },
+    { functional: true, dispatch: false },
+);
+
 export const updateRecipeByIdEffect = createEffect(
     (actions$ = inject(Actions), recipeService = inject(RecipeService)) => {
         return actions$.pipe(
@@ -110,17 +171,17 @@ export const updateRecipeByIdEffect = createEffect(
     },
 );
 
-export const redirectAndAlertEffectAfterDeleteRecipeByIdSuccess = createEffect(
+export const redirectAndAlertEffectAfterUpdateRecipeByIdSuccess = createEffect(
     (
         actions$ = inject(Actions),
         router = inject(Router),
         alertService = inject(AlertService),
     ) => {
         return actions$.pipe(
-            ofType(recipeActions.deleteRecipeByIdSuccess),
-            tap(() => {
-                alertService.showSuccessAlert('recipe', 'recommended');
-                router.navigateByUrl('/recipes');
+            ofType(recipeActions.updateRecipeByIdSuccess),
+            tap(({ recipe }) => {
+                alertService.showSuccessAlert('recipe', 'updated');
+                router.navigateByUrl(`/recipes/${recipe._id}`);
             }),
         );
     },

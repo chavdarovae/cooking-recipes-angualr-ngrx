@@ -1,29 +1,35 @@
-@import "app-variables";
+@use 'app-variables' as *;
 
 .card-container {
-	grid-template-columns: repeat(auto-fit, 390px);
+    grid-template-columns: repeat(auto-fit, 390px);
+    position: relative;
+
+    i.btn {
+        position: absolute;
+        top: 0;
+        right: 0;
+        transform: translate(-110%, -200%);
+    }
 }
 
 .account {
-	width: fit-content;
-	box-shadow: $shadow-pri;
-	border-radius: $rounding-pri;
-	background-color: $bg-ter;
-	padding: 1rem;
+    width: fit-content;
+    box-shadow: $shadow-pri;
+    border-radius: $rounding-pri;
+    background-color: $bg-ter;
+    padding: 1rem;
 
-	i {
-		font-size: 130px;
-	}
+    i {
+        font-size: 130px;
+    }
 
-	&:hover i {
-		transform: scale(1.05);
-	}
+    &:hover i {
+        transform: scale(1.05);
+    }
 
-	&__body {
-		display: grid;
-		grid-template-columns: 90px 130px;
-		justify-items: start;
-	}
+    &__body {
+        display: grid;
+        grid-template-columns: 90px 130px;
+        justify-items: start;
+    }
 }
-
-

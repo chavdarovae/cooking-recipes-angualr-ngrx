@@ -28,6 +28,7 @@ const recipeFeature = createFeature({
             isLoading: false,
             validatonErrors: action.errors,
         })),
+
         // getRecipeById
         on(recipeActions.getRecipeById, (state) => ({
             ...state,
@@ -43,6 +44,23 @@ const recipeFeature = createFeature({
             isLoading: false,
             validatonErrors: action.errors,
         })),
+
+        // createRecipe
+        on(recipeActions.createRecipe, (state) => ({
+            ...state,
+            isLoading: true,
+        })),
+        on(recipeActions.createRecipeSuccess, (state, action) => ({
+            ...state,
+            isLoading: false,
+            recipe: action.recipe,
+        })),
+        on(recipeActions.createRecipeFailure, (state, action) => ({
+            ...state,
+            isLoading: false,
+            validatonErrors: action.errors,
+        })),
+
         // deleteRecipeById
         on(recipeActions.deleteRecipeById, (state) => ({
             ...state,
@@ -54,6 +72,22 @@ const recipeFeature = createFeature({
             recipe: null,
         })),
         on(recipeActions.deleteRecipeByIdFailure, (state, action) => ({
+            ...state,
+            isLoading: false,
+            validatonErrors: action.errors,
+        })),
+
+        // updateRecipeById
+        on(recipeActions.updateRecipeById, (state) => ({
+            ...state,
+            isLoading: true,
+        })),
+        on(recipeActions.updateRecipeByIdSuccess, (state, action) => ({
+            ...state,
+            isLoading: false,
+            recipe: action.recipe,
+        })),
+        on(recipeActions.updateRecipeByIdFailure, (state, action) => ({
             ...state,
             isLoading: false,
             validatonErrors: action.errors,
@@ -75,7 +109,14 @@ const recipeFeature = createFeature({
             validatonErrors: action.errors,
         })),
         // restores the state back to minimal information in memory
-        on(routerNavigatedAction, () => initalState),
+        on(routerNavigatedAction, (state, action) => {
+            const url = action.payload.routerState.url;
+            const isRecipeEditRoute = url.endsWith('/edit');
+            return {
+                ...initalState,
+                recipe: isRecipeEditRoute ? state.recipe : null,
+            };
+        }),
     ),
 });
 

@@ -1,5 +1,6 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
 import {
+    ICreateRecipe,
     IRecipe,
     IRecipeQuery,
     IUpdateRecipe,
@@ -17,15 +18,15 @@ export const recipeActions = createActionGroup({
         getRecipeByIdSuccess: props<{ recipe: IRecipe }>(),
         getRecipeByIdFailure: props<{ errors: IBackendErrors }>(),
 
+        createRecipe: props<{ recipe: ICreateRecipe }>(),
+        createRecipeSuccess: props<{ recipe: IRecipe }>(),
+        createRecipeFailure: props<{ errors: IBackendErrors }>(),
+
         deleteRecipeById: props<{ recipeId: string }>(),
         deleteRecipeByIdSuccess: emptyProps(),
         deleteRecipeByIdFailure: props<{ errors: IBackendErrors }>(),
 
-        createRecipeById: props<{ recipe: IUpdateRecipe }>(),
-        createRecipeByIdSuccess: props<{ recipe: IRecipe }>(),
-        createRecipeByIdFailure: props<{ errors: IBackendErrors }>(),
-
-        updateRecipeById: props<{ recipeId: string; recipe: IUpdateRecipe }>(),
+        updateRecipeById: props<{ recipe: IUpdateRecipe }>(),
         updateRecipeByIdSuccess: props<{ recipe: IRecipe }>(),
         updateRecipeByIdFailure: props<{ errors: IBackendErrors }>(),
 

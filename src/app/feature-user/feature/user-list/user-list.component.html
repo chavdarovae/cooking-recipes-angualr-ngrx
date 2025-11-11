@@ -23,6 +23,11 @@
         </form>
 
         <div class="card-container">
+            <i
+                class="btn btn--accent fa-solid fa-user-plus"
+                [routerLink]="['/users/create']"
+                routerLinkActive="router-link-active">
+            </i>
             @for (account of data.userList; track account._id) {
                 <article class="account jumpy-card row row--no-wrap gap-20">
                     <i class="fa-solid fa-user"></i>
@@ -31,13 +36,13 @@
                         <span>Username:</span> <span class="text-accent">{{ account.username }}</span> <span>Email:</span>
                         <a
                             class="text-accent"
-                            [href]="'mailto:' + account.email"
-                            >{{ account.email }}</a
-                        >
+                            [href]="'mailto:' + account.email">
+                            {{ account.email }}
+                        </a>
                         <span>Role:</span> <span class="text-accent">{{ account.role }}</span>
                         <button
                             class="accent span-2 w100 mt-10"
-                            [routerLink]="['/users/', account?._id]"
+                            [routerLink]="['/users', account?._id, 'edit']"
                             routerLinkActive="router-link-active"
                             [state]="{ user: account }">
                             Edit User

@@ -1,0 +1,55 @@
+@if (data$ | async; as data) {
+    <div class="container">
+        <form
+            #userEditForm="ngForm"
+            class="form w50 pt-30 pb-30 pl-50 pr-50">
+            <clt-input-field
+                label="Username"
+                modelName="usesrname"
+                inpType="text"
+                [minLength]="5"
+                [isRequired]="true"
+                [inpValue]="currUser.username"
+                (onInpChanged)="currUser.username = $event">
+            </clt-input-field>
+
+            <clt-input-field
+                label="Email"
+                modelName="email"
+                inpType="text"
+                [isDisabled]="true"
+                [inpValue]="currUser.email">
+            </clt-input-field>
+
+            <clt-input-select
+                label="Role"
+                modelName="role"
+                [selectList]="userRolesEnum"
+                [inpValue]="currUser.role"
+                [selectEcceptions]="[userRolesEnum.GUEST]"
+                (onSelectChanged)="currUser.role = $event">
+            </clt-input-select>
+
+            <div>
+                <button
+                    type="submit"
+                    class="accent"
+                    (click)="onSubmit(allowedAction)"
+                    [disabled]="userEditForm.invalid || !userEditForm.dirty">
+                    {{ allowedAction | titlecase }} User
+                </button>
+            </div>
+        </form>
+    </div>
+}
+
+<ng-template
+    #hintRef
+    let-field="field"
+    let-fieldName="fieldName">
+    <div
+        *ngIf="field.invalid && !field.pristine"
+        class="form__hint">
+        <ng-container *ngIf="field?.errors?.['required']"> {{ fieldName }} is required field </ng-container>
+    </div>
+</ng-template>

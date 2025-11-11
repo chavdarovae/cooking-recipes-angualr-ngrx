@@ -1,6 +1,22 @@
 import { IUser, UserRolesEnum } from '@app/utils';
 import { IUserQuery } from './user.interfaces';
 
+export class UserCreateItem {
+    username: string;
+    email: string;
+    role: UserRolesEnum;
+
+    constructor(
+        username: string = '',
+        email: string = '',
+        role: UserRolesEnum = UserRolesEnum.GUEST,
+    ) {
+        this.username = username;
+        this.email = email;
+        this.role = role;
+    }
+}
+
 export class UserEditItem implements IUser {
     _id: string = '';
     username: string = '';

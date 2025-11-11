@@ -5,6 +5,7 @@ import { UtilService } from '@app/utils';
 import { environment } from '@env/environment';
 import { filter, Observable, shareReplay, Subject, switchMap } from 'rxjs';
 import {
+    ICreateRecipe,
     IRecipe,
     IRecipeQuery,
     IUpdateRecipe,
@@ -67,7 +68,7 @@ export class RecipeService {
         return this.http.get<IRecipe>(`${this.accountApi}/${recipeId}`);
     }
 
-    create(newRecipe: IRecipe): Observable<IRecipe> {
+    create(newRecipe: ICreateRecipe): Observable<IRecipe> {
         return this.http.post<IRecipe>(this.accountApi, newRecipe);
     }
 
