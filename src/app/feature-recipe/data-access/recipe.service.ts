@@ -4,7 +4,11 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { UtilService } from '@app/utils';
 import { environment } from '@env/environment';
 import { filter, Observable, shareReplay, Subject, switchMap } from 'rxjs';
-import { IRecipe, IRecipeQuery } from '../utils/recipe.interface';
+import {
+    IRecipe,
+    IRecipeQuery,
+    IUpdateRecipe,
+} from '../utils/recipe.interface';
 
 @Injectable({
     providedIn: 'root',
@@ -67,7 +71,7 @@ export class RecipeService {
         return this.http.post<IRecipe>(this.accountApi, newRecipe);
     }
 
-    update(updatedRecipe: IRecipe) {
+    update(updatedRecipe: IUpdateRecipe) {
         return this.http.put<IRecipe>(
             `${this.accountApi}/${updatedRecipe._id}`,
             updatedRecipe,

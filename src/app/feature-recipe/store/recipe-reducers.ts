@@ -28,7 +28,7 @@ const recipeFeature = createFeature({
             isLoading: false,
             validatonErrors: action.errors,
         })),
-        // recipe by id
+        // getRecipeById
         on(recipeActions.getRecipeById, (state) => ({
             ...state,
             isLoading: true,
@@ -39,6 +39,37 @@ const recipeFeature = createFeature({
             recipe: action.recipe,
         })),
         on(recipeActions.getRecipeByIdFailure, (state, action) => ({
+            ...state,
+            isLoading: false,
+            validatonErrors: action.errors,
+        })),
+        // deleteRecipeById
+        on(recipeActions.deleteRecipeById, (state) => ({
+            ...state,
+            isLoading: true,
+        })),
+        on(recipeActions.deleteRecipeByIdSuccess, (state) => ({
+            ...state,
+            isLoading: false,
+            recipe: null,
+        })),
+        on(recipeActions.deleteRecipeByIdFailure, (state, action) => ({
+            ...state,
+            isLoading: false,
+            validatonErrors: action.errors,
+        })),
+
+        // recommendRecipeById
+        on(recipeActions.recommendRecipeById, (state) => ({
+            ...state,
+            isLoading: true,
+        })),
+        on(recipeActions.recommendRecipeByIdSuccess, (state, action) => ({
+            ...state,
+            isLoading: false,
+            recipe: action.recipe,
+        })),
+        on(recipeActions.recommendRecipeByIdFailure, (state, action) => ({
             ...state,
             isLoading: false,
             validatonErrors: action.errors,

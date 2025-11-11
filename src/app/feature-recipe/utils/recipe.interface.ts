@@ -16,6 +16,10 @@ export interface ICreateRecipe {
     recommendList?: { _id: string }[];
 }
 
+export interface IUpdateRecipe extends ICreateRecipe {
+    _id?: string;
+}
+
 export interface IRecipe extends ICreateRecipe {
     _id?: string;
     owner: string;

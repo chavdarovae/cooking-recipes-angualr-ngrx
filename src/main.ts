@@ -1,12 +1,32 @@
 import { bootstrapApplication, BrowserModule } from '@angular/platform-browser';
 import { App } from './app/app';
-import { importProvidersFrom, provideBrowserGlobalErrorListeners, provideZoneChangeDetection, isDevMode } from '@angular/core'
-import { provideRouter, RouterModule, withComponentInputBinding, withRouterConfig } from '@angular/router'
+import {
+    importProvidersFrom,
+    provideBrowserGlobalErrorListeners,
+    provideZoneChangeDetection,
+    isDevMode,
+} from '@angular/core';
+import {
+    provideRouter,
+    RouterModule,
+    withComponentInputBinding,
+    withRouterConfig,
+} from '@angular/router';
 import { APP_ROUTES } from '@app/app.routes';
 import { provideState, provideStore } from '@ngrx/store';
-import { provideHttpClient, withInterceptors, withInterceptorsFromDi } from '@angular/common/http';
+import {
+    provideHttpClient,
+    withInterceptors,
+    withInterceptorsFromDi,
+} from '@angular/common/http';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
-import { authFeatureKey, authInterceptor, authReducer, errorCatchingInterceptor, loaderInterceptor } from '@app/data-access';
+import {
+    authFeatureKey,
+    authInterceptor,
+    authReducer,
+    errorCatchingInterceptor,
+    loaderInterceptor,
+} from '@app/data-access';
 import { provideEffects } from '@ngrx/effects';
 import * as authEffects from './app/data-access/store/auth-effects';
 import * as recipeEffects from './app/feature-recipe/store/recipe-effects';
@@ -17,24 +37,25 @@ bootstrapApplication(App, {
     providers: [
         provideBrowserGlobalErrorListeners(),
         provideZoneChangeDetection({ eventCoalescing: true }),
-        provideHttpClient(withInterceptors([
-            authInterceptor, 
-            errorCatchingInterceptor, 
-            loaderInterceptor
-        ])),
+        provideHttpClient(
+            withInterceptors([
+                authInterceptor,
+                errorCatchingInterceptor,
+                loaderInterceptor,
+            ]),
+        ),
         provideHttpClient(withInterceptorsFromDi()),
-        provideRouter(
-			APP_ROUTES,
-			withComponentInputBinding(),
-            withRouterConfig({
+        importProvidersFrom(
+            RouterModule.forRoot(APP_ROUTES, {
+                useHash: true,
                 anchorScrolling: 'enabled',
                 scrollPositionRestoration: 'enabled',
                 onSameUrlNavigation: 'reload',
-                useHash: true,
-            } as any)
-		),
+            }),
+        ),
+        provideRouter(APP_ROUTES, withComponentInputBinding()),
         provideStore({
-            router: routerReducer
+            router: routerReducer,
         }),
         provideRouterStore(),
         provideState(authFeatureKey, authReducer),
@@ -44,7 +65,7 @@ bootstrapApplication(App, {
             logOnly: !isDevMode(),
             autoPause: true,
             trace: false,
-            traceLimit: 75
+            traceLimit: 75,
         }),
         provideEffects(authEffects, recipeEffects),
     ],

@@ -38,4 +38,11 @@ export class AlertService {
     clearAlerts() {
         this.alertSubject.next(null);
     }
+
+    showSuccessAlert(entity: string, action: string) {
+        this.showAlert({
+            alert: `The ${entity} was successfully ${action}!`,
+            type: 'success',
+        });
+    }
 }

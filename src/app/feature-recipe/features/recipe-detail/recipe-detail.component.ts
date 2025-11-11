@@ -1,21 +1,9 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, inject, Input, OnInit, Signal } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
-import {
-    catchError,
-    combineLatest,
-    distinctUntilChanged,
-    EMPTY,
-    Observable,
-    of,
-    Subject,
-    switchMap,
-    tap,
-} from 'rxjs';
-import { HttpErrorResponse } from '@angular/common/http';
+import { Component, inject, Input, OnInit } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { combineLatest, tap } from 'rxjs';
 import { ModalComponent } from '@app/ui';
-import { RecipeService } from '@app/feature-recipe/data-access/recipe.service';
-import { AlertService, AuthService, selectCurrentUser } from '@app/data-access';
+import { selectCurrentUser } from '@app/data-access';
 import { IRecipe } from '@app/feature-recipe/utils/recipe.interface';
 import { Store } from '@ngrx/store';
 import { recipeActions } from '@app/feature-recipe/store/recipe-actions';
@@ -36,97 +24,63 @@ type RecipeUserInteractionType = 'deleteDialog' | 'delete' | 'recommend';
 })
 export class RecipeDetailComponent implements OnInit {
     // services
-    private recipeService = inject(RecipeService);
-    private alertService = inject(AlertService);
-    private router = inject(Router);
-    public authService = inject(AuthService);
-
     private store = inject(Store);
 
-    // imlicit input from routing
+    // implicit input from routing
     @Input() id!: string;
+
+    // main entity
+    currRecipe!: IRecipe | null;
 
     data$ = combineLatest({
         isLoading: this.store.select(selectIsLoading),
         recipe: this.store.select(selectRecipe),
         backendErrors: this.store.select(selectValidatonErrors),
         currUser: this.store.select(selectCurrentUser),
-    });
+    }).pipe(
+        tap((data) => {
+            this.currRecipe = data.recipe;
+            this.isRecommendedByCurrUser = !!data.recipe?.recommendList?.some(
+                (x) => x._id === data.currUser?._id,
+            );
+        }),
+    );
 
-    // user interaction
-    userIteractionSubj: Subject<RecipeUserInteractionType> = new Subject();
-    userIteraction$!: Observable<IRecipe>;
-    currInteraction!: RecipeUserInteractionType;
-
-    // main entity
-    selectedRecipeSig: Signal<IRecipe | null> =
-        this.recipeService.selectedRecipeSig;
-
-    // aucxiliary variables
+    // auxiliary variables
     showModal = false;
+    isRecommendedByCurrUser!: boolean;
 
     ngOnInit(): void {
         this.store.dispatch(recipeActions.getRecipeById({ recipeId: this.id }));
-        this.initUserInteraction();
     }
 
     onModalClosed(confirmation: boolean) {
         if (confirmation) {
-            this.userIteractionSubj.next('delete');
+            this.modifyEntity('delete');
         }
         this.showModal = false;
     }
 
-    isAlreadyRecommendedByCurrUser(): boolean {
-        const recipe = this.selectedRecipeSig();
-        const currUserId = this.authService.currUserSig()?._id;
-
-        if (!recipe?.recommendList || !currUserId) {
-            return false;
+    modifyEntity(action: RecipeUserInteractionType) {
+        if (!this.currRecipe?._id) return;
+        switch (action) {
+            case 'deleteDialog':
+                this.showModal = true;
+                break;
+            case 'delete':
+                this.store.dispatch(
+                    recipeActions.deleteRecipeById({
+                        recipeId: this.currRecipe._id,
+                    }),
+                );
+                break;
+            case 'recommend':
+                this.store.dispatch(
+                    recipeActions.recommendRecipeById({
+                        recipeId: this.currRecipe._id,
+                    }),
+                );
+                break;
         }
-
-        return recipe.recommendList
-            ?.flatMap((x: { _id: string }) => x._id)
-            ?.includes(currUserId);
-    }
-
-    private initUserInteraction(): void {
-        this.userIteraction$ = this.userIteractionSubj.asObservable().pipe(
-            distinctUntilChanged((prev, curr) => {
-                return curr.includes('Dialog') ? false : prev === curr;
-            }),
-            tap((action) => (this.currInteraction = action)),
-            switchMap((action) => {
-                switch (action) {
-                    case 'deleteDialog':
-                        return of('deleteDialog').pipe(
-                            tap(() => (this.showModal = true)),
-                        );
-                    case 'delete':
-                        return this.recipeService
-                            .delete(this.selectedRecipeSig()?._id)
-                            .pipe(
-                                tap(() =>
-                                    this.router.navigateByUrl('/recipes'),
-                                ),
-                            );
-                    case 'recommend':
-                        return this.recipeService.recommend(
-                            this.selectedRecipeSig()?._id,
-                        );
-                }
-            }),
-            tap(() => {
-                this.alertService.showAlert({
-                    alert: `The recipe was successfully ${this.currInteraction}d!`,
-                    type: 'success',
-                });
-            }),
-            catchError((err: HttpErrorResponse) => {
-                console.error('Recipe operation failed:', err);
-                this.initUserInteraction();
-                return EMPTY;
-            }),
-        );
     }
 }

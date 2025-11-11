@@ -1,6 +1,6 @@
-@if ({ ui: userIteraction$ | async, data: data$ | async }; as subs) {
+@if (data$ | async; as data) {
     <div class="container">
-        @if (subs.data?.recipe; as selectedRecipe) {
+        @if (data?.recipe; as selectedRecipe) {
             <article class="recipe">
                 <h2>{{ selectedRecipe?.title }}</h2>
 
@@ -30,10 +30,10 @@
                     <hr />
 
                     <div class="row row--no-wrap row--space-btw w100 mt-20">
-                        @if (subs.data?.currUser?._id === selectedRecipe?.owner) {
+                        @if (data?.currUser?._id === selectedRecipe?.owner) {
                             <button
                                 class="danger"
-                                (click)="userIteractionSubj.next('deleteDialog')">
+                                (click)="modifyEntity('deleteDialog')">
                                 Delete
                             </button>
                             <button
@@ -45,8 +45,8 @@
                             <button [routerLink]="['/recipes/']">Back to Recipes</button>
                             <button
                                 class="accent"
-                                (click)="userIteractionSubj.next('recommend')"
-                                [disabled]="isAlreadyRecommendedByCurrUser()">
+                                (click)="modifyEntity('recommend')"
+                                [disabled]="isRecommendedByCurrUser">
                                 Recommend
                             </button>
                         }
@@ -61,7 +61,8 @@
             <app-modal
                 [show]="showModal"
                 entity="recipe"
-                (close)="onModalClosed($event)"></app-modal>
+                (close)="onModalClosed($event)">
+            </app-modal>
         }
     </div>
 }
