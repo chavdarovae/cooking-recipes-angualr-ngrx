@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { InputFieldComponent, InputSelectComponent } from '@app/ui';
@@ -28,8 +28,10 @@ type UserUserInteractionType = 'update' | 'create';
         InputSelectComponent,
     ],
 })
-export class UserCreateComponent {
+export class UserCreateComponent implements OnInit {
     private store = inject(Store);
+
+    @Input() id!: string; // implicit input from routing
 
     // main entity
     currUser!: UserCreateItem | UserEditItem;
@@ -48,6 +50,10 @@ export class UserCreateComponent {
                 : 'create';
         }),
     );
+
+    ngOnInit(): void {
+        this.store.dispatch(userActions.getUserById({ userId: this.id }));
+    }
 
     onSubmit(action: UserUserInteractionType) {
         const user = { ...this.currUser };

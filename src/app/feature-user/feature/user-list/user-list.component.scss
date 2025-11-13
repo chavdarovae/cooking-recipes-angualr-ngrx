@@ -2,14 +2,6 @@
 
 .card-container {
     grid-template-columns: repeat(auto-fit, 390px);
-    position: relative;
-
-    i.btn {
-        position: absolute;
-        top: 0;
-        right: 0;
-        transform: translate(-110%, -200%);
-    }
 }
 
 .account {

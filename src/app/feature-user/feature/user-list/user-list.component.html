@@ -23,11 +23,12 @@
         </form>
 
         <div class="card-container">
-            <i
-                class="btn btn--accent fa-solid fa-user-plus"
+            <div
+                class="card-container__button accent"
                 [routerLink]="['/users/create']"
                 routerLinkActive="router-link-active">
-            </i>
+                +
+            </div>
             @for (account of data.userList; track account._id) {
                 <article class="account jumpy-card row row--no-wrap gap-20">
                     <i class="fa-solid fa-user"></i>
@@ -40,13 +41,20 @@
                             {{ account.email }}
                         </a>
                         <span>Role:</span> <span class="text-accent">{{ account.role }}</span>
-                        <button
-                            class="accent span-2 w100 mt-10"
-                            [routerLink]="['/users', account?._id, 'edit']"
-                            routerLinkActive="router-link-active"
-                            [state]="{ user: account }">
-                            Edit User
-                        </button>
+                        <div class="row row--no-wrap span-2 gap-10">
+                            <button
+                                class="danger span-2 w100 mt-10"
+                                (click)="showDeleteUserDialog(account)">
+                                Delete
+                            </button>
+
+                            <button
+                                class="accent span-2 w100 mt-10"
+                                [routerLink]="['/users', account?._id, 'edit']"
+                                routerLinkActive="router-link-active">
+                                Edit
+                            </button>
+                        </div>
                     </div>
                 </article>
             } @empty {
@@ -55,3 +63,9 @@
         </div>
     </div>
 }
+
+<app-modal
+    [show]="showModal"
+    entity="user"
+    (close)="onModalClosed($event)">
+</app-modal>

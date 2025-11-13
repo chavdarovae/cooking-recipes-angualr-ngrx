@@ -94,6 +94,7 @@ const userFeature = createFeature({
             isLoading: false,
             validatonErrors: action.errors,
         })),
+        // navigation
         on(routerNavigatedAction, (state, action) => {
             const url = action.payload.routerState.url;
             const isUserEditRoute = url.endsWith('/edit');

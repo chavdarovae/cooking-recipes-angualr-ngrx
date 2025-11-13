@@ -1,5 +1,5 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
-import { IBackendErrors, ICreateUser, IUser } from '@app/utils';
+import { IBackendErrors, IUser } from '@app/utils';
 import { IUserQuery } from '../utils/user.interfaces';
 import { UserCreateItem, UserEditItem } from '../utils/user.models';
 

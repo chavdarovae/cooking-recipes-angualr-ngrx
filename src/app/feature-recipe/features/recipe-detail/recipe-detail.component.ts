@@ -23,15 +23,12 @@ type RecipeUserInteractionType = 'deleteDialog' | 'delete' | 'recommend';
     imports: [RouterLink, ModalComponent, AsyncPipe],
 })
 export class RecipeDetailComponent implements OnInit {
-    // services
     private store = inject(Store);
 
-    // implicit input from routing
-    @Input() id!: string;
+    @Input() id!: string; // implicit input from routing
 
     // main entity
     currRecipe!: IRecipe | null;
-
     data$ = combineLatest({
         isLoading: this.store.select(selectIsLoading),
         recipe: this.store.select(selectRecipe),

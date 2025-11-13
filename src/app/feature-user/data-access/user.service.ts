@@ -33,6 +33,10 @@ export class UserService {
         return this.http.post<IUser>(this.userApiUrl + '/accounts', newUser);
     }
 
+    delete(userId: string): Observable<IUser> {
+        return this.http.delete<IUser>(this.userApiUrl + '/accounts/' + userId);
+    }
+
     updatetUserById(modifiedUser: UserEditItem): Observable<IUser> {
         return this.http.put<IUser>(
             this.userApiUrl + '/accounts/' + modifiedUser._id,

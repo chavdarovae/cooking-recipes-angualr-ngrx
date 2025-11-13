@@ -1,19 +1,4 @@
 @use 'app-variables.scss' as *;
 
-i.btn {
-    background: $app;
-    color: $text-color-sec;
-    font-size: 40px;
-    padding: 5px;
-    width: fit-content;
-    height: fit-content;
-    aspect-ratio: 1 !important;
-    border-radius: $rounding-pri;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    &--accent {
-        background: $app-accent;
-    }
+i {
 }
