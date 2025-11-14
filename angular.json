@@ -32,7 +32,9 @@
                         "stylePreprocessorOptions": {
                             "includePaths": [
                                 "src/styles",
-                                "src/styles/settings"
+                                "src/styles/settings",
+                                "public/img",
+                                "public/fonts"
                             ]
                         }
                     },
