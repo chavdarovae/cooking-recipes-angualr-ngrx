@@ -18,11 +18,11 @@ export class UserService {
     private userApiUrl = environment.backendUrl + '/api/users';
 
     getAllUsers(query: IUserQuery): Observable<IUser[]> {
-        return this.http.get<IUser[]>(
-            this.userApiUrl +
-                '/accounts' +
-                this.utilService.transformQueryIntoString(query),
-        );
+        const params =
+            this.utilService.transformQueryIntoParams<IUserQuery>(query);
+        return this.http.get<IUser[]>(this.userApiUrl + '/accounts', {
+            params,
+        });
     }
 
     getUserById(userId: string): Observable<IUser> {

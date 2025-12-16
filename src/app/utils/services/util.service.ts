@@ -1,18 +1,20 @@
+import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 @Injectable({
     providedIn: 'root',
 })
 export class UtilService {
-    transformQueryIntoString(query: unknown) {
-        const currQuery = query as Record<string, string>;
-        let strToReturn = '?';
+    transformQueryIntoParams<T>(query: T): HttpParams {
+        let params = new HttpParams();
+        for (const key in query) {
+            const value = query[key];
 
-        for (const key in currQuery) {
-            if (currQuery.hasOwnProperty(key) && !!currQuery[key]) {
-                strToReturn += `${key}=${currQuery[key]}&`;
-            }
+            if (!['string', 'number', 'boolean'].includes(typeof value))
+                continue;
+
+            params = params.append(key, String(value));
         }
-        return strToReturn;
+        return params;
     }
 }

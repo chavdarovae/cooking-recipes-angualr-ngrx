@@ -26,14 +26,14 @@ export class RecipeService {
     recipes$: Observable<IRecipe[]> = this.relaodRecipesSubj
         .asObservable()
         .pipe(
-            switchMap((query: IRecipeQuery) =>
-                this.http.get<IRecipe[]>(
-                    this.accountApi +
-                        this.utilService.transformQueryIntoString(
-                            query as Record<string, string>,
-                        ),
-                ),
-            ),
+            switchMap((query: IRecipeQuery) => {
+                const params =
+                    this.utilService.transformQueryIntoParams<IRecipeQuery>(
+                        query,
+                    );
+
+                return this.http.get<IRecipe[]>(this.accountApi, { params });
+            }),
             shareReplay(),
         );
     recipesSig = toSignal(this.recipes$, { initialValue: [] as IRecipe[] });
@@ -59,9 +59,9 @@ export class RecipeService {
     }
 
     getAllRecipes(query: IRecipeQuery): Observable<IRecipe[]> {
-        return this.http.get<IRecipe[]>(
-            this.accountApi + this.utilService.transformQueryIntoString(query),
-        );
+        const params =
+            this.utilService.transformQueryIntoParams<IRecipeQuery>(query);
+        return this.http.get<IRecipe[]>(this.accountApi, { params });
     }
 
     getRecipeById(recipeId: string): Observable<IRecipe> {
